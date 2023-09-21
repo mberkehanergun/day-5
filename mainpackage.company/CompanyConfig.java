@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ public class CompanyConfig {
     @Autowired
     public CompanyConfig(DataSource dataSource) {
         this.dataSource = dataSource;
+	this.initializeTCLNUMFromDatabase();
     }
     
     public int getTCLNUM() {
@@ -48,7 +48,6 @@ public class CompanyConfig {
         }
     }
 
-    @PostConstruct
     public void initializeTCLNUMFromDatabase() {
         try (Connection connection = dataSource.getConnection()) {
             String selectQuery = "SELECT TCLNUM FROM COMPANYCONFIG";
